@@ -8,8 +8,9 @@
   width: 300px;
   background-color: #ffffff;
   position: fixed;
-  height: auto !important;
+  height: 100% !important;
   overflow: auto;
+  color: $text-color;
 
   @media screen and (max-width: 960px) {
     width: 50px !important;
@@ -57,6 +58,7 @@
     line-height: 21px;
     letter-spacing: 0px;
     text-align: left;
+    color: $text-color;
   }
   li {
     margin: 10px 15px;
@@ -87,7 +89,7 @@
       @media screen and (max-width: 960px) {
         width: 30px;
         height: 30px;
-        margin-left:-14px
+        margin-left: -14px;
       }
     }
   }
@@ -104,8 +106,19 @@
     @media screen and (max-width: 576px) {
       width: 60px;
       height: 30px;
-
     }
+  }
+}
+
+.hamburger {
+  .img {
+    color: $white;
+    fill: $purple;
+    background-color: grey;
+  }
+  .selected {
+    background-color: $purple;
+    color: $white;
   }
 }
 
@@ -116,10 +129,12 @@
   line-height: 31px;
   letter-spacing: 0px;
   text-align: left;
+  color: $text-color;
 }
 
 .date-div {
   font-family: DM Sans;
+  color: $text-color;
   font-size: 16px;
   font-weight: 400;
   line-height: 21px;
@@ -133,6 +148,7 @@
   height: 52px;
   border-radius: 8px;
   border: 1px;
+  color: $text-color;
 }
 
 .input-select {
@@ -143,19 +159,37 @@
   gap: 10px;
 }
 
+.ps-20 {
+  padding-left: 0 !important;
+  @media screen and (max-width: 1200px) {
+    padding-left: 20px !important;
+  }
+}
+.table-title {
+  color: $text-color;
+}
+
 .table {
   border: 1px solid rgba(234, 234, 234, 1);
   border-radius: 12px;
   width: 1069px;
   padding: 15px;
 
-  th {
+  .status {
+    color: $purple !important;
+  }
+
+  .td {
+    color: $text-color;
+  }
+
+  .th {
     font-family: DM Sans;
     font-size: 16px;
     font-weight: 400;
     line-height: 21px;
     letter-spacing: 0px;
     text-align: left;
-    opacity: 0.5px;
+    color: $text-color;
   }
 }

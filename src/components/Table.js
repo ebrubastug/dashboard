@@ -26,8 +26,8 @@ function Table(props) {
       </thead>
       <tbody>
         {res?.map((row) => (
-          <tr key={row?.id}>
-            <th>
+          <tr class="th" key={row?.id}>
+            <th >
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -39,9 +39,9 @@ function Table(props) {
               <img src={gallery} class="img-thumbnail me-2" />
               {row?.name}
             </td>
-            <td>{row?.tags[1]}</td>
-            <td>{row?.status}</td>
-            <td>...</td>
+            <td class="td">{row?.tags[1]}</td>
+            <td class="status td">{row?.status}</td>
+            <td class="td"> {"..."} </td>
           </tr>
         ))}
       </tbody>

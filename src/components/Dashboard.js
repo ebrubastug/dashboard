@@ -1,13 +1,33 @@
 "use-client";
-import React from "react";
+import { useState, useRef, React } from "react";
+import { useClickAway } from "use-click-away";
+import { AnimatePresence, motion } from "framer-motion";
+import { Squash as Hamburger } from "hamburger-react";
 import "../scss/style.scss";
 import gallery from "../images/gallery.svg";
 import notification from "../images/notification.svg";
 import search from "../images/search.svg";
 import Table from "./Table";
 import Navbar from "./Navbar";
+import NavMobile from "./NavMobile";
+import { useMediaQuery } from "react-responsive";
+import ono from "../images/ono.svg";
+import dashboard from "../images/dashboard.svg";
+import campaign from "../images/campaign.svg";
+import content from "../images/dashboard.svg";
+import audience from "../images/audience.svg";
+import flows from "../images/flows.svg";
+import settings from "../images/settings.svg";
 
 const Dashboard = () => {
+  const [isOpen, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useClickAway(ref, () => setOpen(false));
+
+  const isTabletOrMobile = useMediaQuery({
+    query: "(max-width: 1200px)",
+  });
   return (
     <>
       <head>
@@ -24,70 +44,116 @@ const Dashboard = () => {
       <body>
         <div class="container-fluid">
           <div class="row">
-            <div class="col-sm-3 px-0 py-0">
-              {/* <nav class="navbar">
-                <ul class="nav flex-column">
-                  <li class="nav-item logo-container">
-                    <img src={ono} class="logo" alt="logo" />
-                  </li>
-                  <li class="navbar-item">
-                    <form class="d-flex" role="search">
-                      <img src={search} class="" />
-                      <input
-                        class="form-control me-2 search navbar-search"
-                        type="search"
-                        placeholder="      Search"
-                        aria-label="Search"
-                      />
-                    </form>
-                  </li>
-                  <li class="nav-item">
-                    <span>Menu</span>
-                  </li>
-                  <li class="nav-item">
-                    <a class="navbar-brand" href="#">
-                      <img src={dashboard} alt="dashboard" />
-                      <span>Dashboard</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="navbar-brand" href="#">
-                      <img src={campaign} alt="dashboard" />
-                      <span> Campaign </span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="navbar-brand" href="#">
-                      <img src={audience} alt="dashboard" />
-                      <span> Audience </span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="navbar-brand" href="#">
-                      <img src={flows} alt="dashboard" />
-                      <span> Flows </span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="navbar-brand" href="#">
-                      <img src={content} alt="dashboard" />
-                      <span> Content </span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="navbar-brand" href="#">
-                      <img src={settings} alt="dashboard" />
-                      <span> Settings </span>
-                    </a>
-                  </li>
-                  <li class="mt-5 d-flex justify-content-center">
-                    <button className="button">Logout</button>
-                  </li>
-                </ul>
-              </nav> */}
-              <Navbar/>
+            <div class="col-sm col-md col-lg-3 px-0 py-0">
+              {isTabletOrMobile ? (
+                <div ref={ref}>
+                  <Hamburger toggled={isOpen} size={20} toggle={setOpen} />
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className=""
+                      >
+                        <ul class="list-group hamburger">
+                          <li class="list-group-item">
+                            <span>Menu</span>
+                          </li>
+                          <li class="list-group-item" aria-current="true">
+                            <img src={dashboard} alt="dashboard" class="pe-2" />
+                            <span>Dashboard</span>
+                          </li>
+                          <li class="list-group-item">
+                            <img src={campaign} alt="dashboard" class="pe-2" />
+                            <span> Campaign </span>
+                          </li>
+                          <li class="list-group-item selected">
+                            <img src={audience} alt="dashboard" class="pe-2" />
+                            <span> Audience </span>
+                          </li>
+                          <li class="list-group-item">
+                            <img src={flows} alt="dashboard" class="pe-2" />
+                            <span> Flows </span>
+                          </li>
+                          <li class="list-group-item">
+                            <img src={content} alt="dashboard" class="pe-2" />
+                            <span> Content </span>
+                          </li>
+                          <li class="list-group-item">
+                            <img src={settings} alt="dashboard" class="pe-2" />
+                            <span> Settings </span>
+                          </li>
+                        </ul>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <nav class="navbar d-block">
+                  <ul class="nav flex-column">
+                    <li class="nav-item logo-container">
+                      <img src={ono} class="logo" alt="logo" />
+                    </li>
+                    <li class="navbar-item">
+                      <form class="d-flex" role="search">
+                        <img src={search} class="" />
+                        <input
+                          class="form-control me-2 search navbar-search"
+                          type="search"
+                          placeholder="      Search"
+                          aria-label="Search"
+                        />
+                      </form>
+                    </li>
+                    <li class="nav-item">
+                      <span>Menu</span>
+                    </li>
+                    <li class="nav-item">
+                      <a class="navbar-brand" href="#">
+                        <img src={dashboard} alt="dashboard" />
+                        <span>Dashboard</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="navbar-brand" href="#">
+                        <img src={campaign} alt="dashboard" />
+                        <span> Campaign </span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="navbar-brand" href="#">
+                        <img src={audience} alt="dashboard" />
+                        <span> Audience </span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="navbar-brand" href="#">
+                        <img src={flows} alt="dashboard" />
+                        <span> Flows </span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="navbar-brand" href="#">
+                        <img src={content} alt="dashboard" />
+                        <span> Content </span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="navbar-brand" href="#">
+                        <img src={settings} alt="dashboard" />
+                        <span> Settings </span>
+                      </a>
+                    </li>
+                    <li class="mt-5 d-flex justify-content-center">
+                      <button className="button">Logout</button>
+                    </li>
+                  </ul>
+                </nav>
+              )}
             </div>
-            <div class="col-sm-9 ps-0 pe-5">
+            <div class="col-sm-12 col-md-12 col-lg-9 ps-20 pe-5">
               <div class="container"></div>
               <div class="row mt-5 d-flex">
                 <div class="col-6">
@@ -108,7 +174,9 @@ const Dashboard = () => {
                 </div>
               </div>
               <div class="row mt-5">
-                <div class="col-3"> Audience List</div>
+                <div class="col-3 table-title d-flex justify-content-center">
+                  Audience List
+                </div>
                 <div class="col-9 d-flex justify-content-end">
                   <div class="me-2">
                     <form class="d-flex" role="search">

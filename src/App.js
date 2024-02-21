@@ -1,5 +1,5 @@
-
 import Dashboard from "./components/Dashboard";
+import NavMobile from "./components/NavMobile";
 
 function App() {
   return (

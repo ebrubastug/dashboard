@@ -1,9 +1,5 @@
 import React from "react";
 import gallery from "../images/gallery.svg";
-import Httper from "../lib/api";
-
-const url = "https://onox.cloud/backend/simple_audience.php";
-var res = await Httper("get", url);
 
 function Table(props) {
   return (
@@ -12,22 +8,22 @@ function Table(props) {
         <tr>
           <th>
             <input
-              class="form-check-input"
+              class="form-check-input input-checked"
               type="checkbox"
               value=""
               id="flexCheckDefault"
             />
           </th>
-          <th>Audience Name</th>
-          <th>Tags</th>
-          <th>Status</th>
-          <th>Action</th>
+          <th class="th">Audience Name</th>
+          <th class="th">Tags</th>
+          <th class="th">Status</th>
+          <th class="th">Action</th>
         </tr>
       </thead>
       <tbody>
-        {res?.map((row) => (
+        {props.data?.map((row) => (
           <tr class="th" key={row?.id}>
-            <th >
+            <th>
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -39,7 +35,7 @@ function Table(props) {
               <img src={gallery} class="img-thumbnail me-2" />
               {row?.name}
             </td>
-            <td class="td">{row?.tags[1]}</td>
+            <td class="td">{row?.tags[0]}</td>
             <td class="status td">{row?.status}</td>
             <td class="td"> {"..."} </td>
           </tr>

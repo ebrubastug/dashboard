@@ -5,7 +5,7 @@
   border: 1px solid rgba(234, 234, 234, 1);
   margin: 0px !important;
   padding: 0px !important;
-  width: 300px;
+  width: 350px;
   background-color: #ffffff;
   position: fixed;
   height: 100% !important;
@@ -20,10 +20,6 @@
   .navbar-search {
     width: 226px !important;
     height: 52px !important;
-    border-radius: 8px;
-    border: 1px;
-    display: flex;
-    justify-content: center;
   }
 
   .logo-container {
@@ -111,14 +107,14 @@
 }
 
 .hamburger {
-  .img {
-    color: $white;
-    fill: $purple;
-    background-color: grey;
-  }
   .selected {
     background-color: $purple;
     color: $white;
+  }
+
+  .hm-img {
+    width: 70px !important;
+    height: 50px !important;
   }
 }
 
@@ -129,7 +125,10 @@
   line-height: 31px;
   letter-spacing: 0px;
   text-align: left;
-  color: $text-color;
+  color: black;
+  @media screen and (max-width: 576px) {
+    padding-left: 10px;
+  }
 }
 
 .date-div {
@@ -141,6 +140,9 @@
   letter-spacing: 0px;
   text-align: left;
   margin-top: 10px;
+  @media screen and (max-width: 576px) {
+    padding-left: 10px;
+  }
 }
 
 .input-search {
@@ -149,6 +151,9 @@
   border-radius: 8px;
   border: 1px;
   color: $text-color;
+  @media screen and (max-width: 720px) {
+    width: 100px !important;
+  }
 }
 
 .input-select {
@@ -164,9 +169,34 @@
   @media screen and (max-width: 1200px) {
     padding-left: 20px !important;
   }
+  @media screen and (max-width: 1200px) {
+    padding-left: 20px !important;
+  }
 }
+
+.pe-20 {
+  @media screen and (min-width: 1200px) {
+    padding-right: 20px !important;
+  }
+}
+
+.ps-30 {
+  @media screen and (max-width: 1200px) {
+    padding-left: 10px !important;
+  }
+  @media screen and (max-width: 576px) {
+    padding-left: 8px !important;
+  }
+}
+
 .table-title {
-  color: $text-color;
+  color: black;
+  margin-bottom: 20px;
+}
+
+.form-check-input:checked {
+  background-color: $purple !important;
+  border-color: $purple !important;
 }
 
 .table {
@@ -174,6 +204,14 @@
   border-radius: 12px;
   width: 1069px;
   padding: 15px;
+
+  img {
+    @media screen and (max-width: 576px) {
+      height: 20px !important;
+      width: 20px !important;
+      padding: 0 !important;
+    }
+  }
 
   .status {
     color: $purple !important;
@@ -191,5 +229,8 @@
     letter-spacing: 0px;
     text-align: left;
     color: $text-color;
+    @media screen and (max-width: 576px) {
+      font-size: 14px;
+    }
   }
 }

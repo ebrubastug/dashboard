@@ -4,7 +4,6 @@ import axios from "axios";
 export default function Httper(method, url, data, headers) {
   return axios({ method, url, data, headers })
     .then(function (response) {
-      console.log(response.data);
       // handle success
       return response?.data;
     })

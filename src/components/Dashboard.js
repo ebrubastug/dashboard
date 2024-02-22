@@ -1,5 +1,5 @@
 "use-client";
-import { useState, useRef, React } from "react";
+import { useState, useRef, useEffect, React } from "react";
 import { useClickAway } from "use-click-away";
 import { AnimatePresence, motion } from "framer-motion";
 import { Squash as Hamburger } from "hamburger-react";
@@ -18,16 +18,61 @@ import content from "../images/dashboard.svg";
 import audience from "../images/audience.svg";
 import flows from "../images/flows.svg";
 import settings from "../images/settings.svg";
+import Httper from "../lib/api";
+import Alert from "./Alert";
+
+const url = "https://onox.cloud/backend/simple_audience.php";
+var res = await Httper("get", url);
 
 const Dashboard = () => {
-  const [isOpen, setOpen] = useState(false);
   const ref = useRef(null);
+  const [isOpen, setOpen] = useState(false);
+  const [alert, setAlert] = useState(false);
+  const [search, setSearch] = useState([]);
 
   useClickAway(ref, () => setOpen(false));
+
+  const handleSearch = (event) => {
+    const value = event.target.value;
+    const filteredData = res.filter((x) =>
+      x.name.toLowerCase().includes(value.toLowerCase())
+    );
+
+    setSearch(filteredData);
+    if (!filteredData.length > 0) setAlert(true);
+    else setAlert(false);
+  };
+
+  const handleTag = (event) => {
+    const value = event.target.value;
+
+    const filteredData =
+      search.length > 0
+        ? search.filter((x) => x.tags[0] === value)
+        : res.filter((x) => x.tags[0] === value);
+
+    setSearch(filteredData);
+    if (!filteredData.length > 0) setAlert(true);
+    else setAlert(false);
+  };
+
+  const handleStatus = (event) => {
+    const value = event.target.value;
+
+    const filteredData =
+      search.length > 0
+        ? search.filter((x) => x.status === value)
+        : res.filter((x) => x.status === value);
+
+    setSearch(filteredData);
+    if (!filteredData.length > 0) setAlert(true);
+    else setAlert(false);
+  };
 
   const isTabletOrMobile = useMediaQuery({
     query: "(max-width: 1200px)",
   });
+
   return (
     <>
       <head>
@@ -58,9 +103,9 @@ const Dashboard = () => {
                         className=""
                       >
                         <ul class="list-group hamburger">
-                          <li class="list-group-item">
-                            <span>Menu</span>
-                          </li>
+                          <div class=" d-flex justify-content-end pe-2">
+                            <img src={ono} class="hm-img" />
+                          </div>
                           <li class="list-group-item" aria-current="true">
                             <img src={dashboard} alt="dashboard" class="pe-2" />
                             <span>Dashboard</span>
@@ -70,7 +115,12 @@ const Dashboard = () => {
                             <span> Campaign </span>
                           </li>
                           <li class="list-group-item selected">
-                            <img src={audience} alt="dashboard" class="pe-2" />
+                            <img
+                              src={audience}
+                              alt="dashboard"
+                              class="pe-2"
+                              fill={"#fff"}
+                            />
                             <span> Audience </span>
                           </li>
                           <li class="list-group-item">
@@ -97,12 +147,11 @@ const Dashboard = () => {
                       <img src={ono} class="logo" alt="logo" />
                     </li>
                     <li class="navbar-item">
-                      <form class="d-flex" role="search">
-                        <img src={search} class="" />
+                      <form class="d-flex justify-content-center" role="search">
                         <input
-                          class="form-control me-2 search navbar-search"
+                          class="form-control me-2 navbar-search"
                           type="search"
-                          placeholder="      Search"
+                          placeholder="Search"
                           aria-label="Search"
                         />
                       </form>
@@ -153,105 +202,78 @@ const Dashboard = () => {
                 </nav>
               )}
             </div>
-            <div class="col-sm-12 col-md-12 col-lg-9 ps-20 pe-5">
-              <div class="container"></div>
-              <div class="row mt-5 d-flex">
-                <div class="col-6">
-                  <div class="welcome-div"> Welcome, Amanda</div>
-                  <div class="date-div"> Tue, 07 June 2022</div>
-                </div>
-                <div class="col-6 d-inline-flex justify-content-end">
-                  <div>
-                    <img
-                      src={notification}
-                      class="img-thumbnail me-3"
-                      alt="dashboard"
-                    />
+            <div class="col-sm-12 col-md-12 col-lg-9 ps-20 ps-30 pe-20">
+              <div class="container">
+                <div class="row mt-5">
+                  <div class="col-6">
+                    <div class="welcome-div"> Welcome, Amanda</div>
+                    <div class="date-div"> Tue, 07 June 2022</div>
                   </div>
-                  <div>
-                    <img src={gallery} class="img-thumbnail" alt="dashboard" />
-                  </div>
-                </div>
-              </div>
-              <div class="row mt-5">
-                <div class="col-3 table-title d-flex justify-content-center">
-                  Audience List
-                </div>
-                <div class="col-9 d-flex justify-content-end">
-                  <div class="me-2">
-                    <form class="d-flex" role="search">
-                      <input
-                        class="form-control me-2 search input-search"
-                        type="search"
-                        placeholder="Search"
-                        aria-label="Search"
+                  <div class="col-6 d-flex justify-content-end">
+                    <div>
+                      <img
+                        src={notification}
+                        class="img-thumbnail me-3"
+                        alt="dashboard"
                       />
-                    </form>
-                  </div>
-                  <div class="me-3">
-                    <select
-                      class="form-select form-select-sm input-select"
-                      aria-label="Small select example"
-                    >
-                      <option selected>Select Tags</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
-                  </div>
-                  <div>
-                    <select
-                      class="form-select form-select-sm input-select"
-                      aria-label="Small select example"
-                    >
-                      <option selected>All Status</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
+                    </div>
+                    <div>
+                      <img
+                        src={gallery}
+                        class="img-thumbnail"
+                        alt="dashboard"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="row mt-5">
-                <div class="col-12">
-                  {/* <table class="table">
-                      <thead>
-                        <tr>
-                          <th>
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="flexCheckDefault"
-                            />
-                          </th>
-                          <th>Audience Name</th>
-                          <th>Tags</th>
-                          <th>Status</th>
-                          <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <th>
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="flexCheckDefault"
-                            />
-                          </th>
-                          <td>
-                            <img src={gallery} class="img-thumbnail me-2" />
-                            David Harry
-                          </td>
-                          <td>Design</td>
-                          <td>Status</td>
-                          <td>...</td>
-                        </tr>
-                      </tbody>
-                    </table> */}
-                  <Table />
+
+                <div class="row mt-5">
+                  <div class="col-sm-9 col-md-12 col-lg-3 table-title d-flex justify-content-center">
+                    <div>Audience List</div>
+                  </div>
+                  <div class="col-sm-9 col-md-12 col-lg-9 d-flex justify-content-end">
+                    <div class="me-2">
+                      <form class="d-flex" role="search">
+                        <input
+                          class="form-control me-2 search input-search"
+                          type="search"
+                          placeholder="Search"
+                          aria-label="Search"
+                          onChange={handleSearch}
+                        />
+                      </form>
+                    </div>
+                    <div class="me-3">
+                      <select
+                        class="form-select form-select-sm input-select"
+                        aria-label="Small select example"
+                        onChange={handleTag}
+                      >
+                        <option selected>Select Tags</option>
+                        <option value="Design">Design</option>
+                        <option value="Development">Development</option>
+                        <option value="Marketing">Marketing</option>
+                      </select>
+                    </div>
+                    <div>
+                      <select
+                        class="form-select form-select-sm input-select"
+                        aria-label="Small select example"
+                        onChange={handleStatus}
+                      >
+                        <option selected>All Status</option>
+                        <option value="active">Active</option>
+                        <option value="passive">Passive</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mt-5">
+                  <div class="col-12">
+                    {alert ? <Alert /> : ""}
+                    <Table data={search.length > 0 ? search : res} />
+                  </div>
                 </div>
               </div>
             </div>

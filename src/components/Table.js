@@ -18,7 +18,7 @@ function Table(props) {
     setCheckAll(list);
   };
 
-  const test = () => {
+  const chechAllHandler = () => {
     var list = checkAll?.map((item) => {
       var data = { ...item, checked: !item.checked };
       return data;
@@ -35,7 +35,7 @@ function Table(props) {
               class="form-check-input input-checked"
               type="checkbox"
               onClick={() => {
-                test();
+                chechAllHandler();
               }}
               id="flexCheckDefault"
             />

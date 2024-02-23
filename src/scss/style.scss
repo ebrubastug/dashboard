@@ -125,9 +125,13 @@
   border: none;
   font-family: Dm Sans;
   color: $white;
+  @media screen and (max-width: 1200px) {
+    width: 140px;
+    height: 40px;
+  }
   @media screen and (max-width: 576px) {
-    width: 60px;
-    height: 30px;
+    width: 110px;
+    height: 32px;
   }
 }
 

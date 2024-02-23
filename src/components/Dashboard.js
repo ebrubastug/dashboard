@@ -1,25 +1,23 @@
 "use-client";
-import { useState, useRef, useEffect, React } from "react";
-import { useClickAway } from "use-click-away";
-import { AnimatePresence, motion } from "framer-motion";
-import { Squash as Hamburger } from "hamburger-react";
+import Alert from "./Alert";
 import "../scss/style.scss";
+import Table from "./Table";
+import Httper from "../lib/api";
+import ono from "../images/ono.svg";
+import { Flows } from "../icons/Flows.icon";
+import { Logout } from "../icons/Logout.icon";
+import { Content } from "../icons/Content.icon";
+import { Settings } from "../icons/Setting.icon";
+import { Audience } from "../icons/Audience.icon";
+import { Campaign } from "../icons/Campaign.icon";
+import { useClickAway } from "use-click-away";
+import { useMediaQuery } from "react-responsive";
+import { Squash as Hamburger } from "hamburger-react";
+import { useState, useRef, React, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { DashboardIcon } from "../icons/DashboardIcon.icon";
 import gallery from "../images/gallery.svg";
 import notification from "../images/notification.svg";
-import search from "../images/search.svg";
-import Table from "./Table";
-import Navbar from "./Navbar";
-import NavMobile from "./NavMobile";
-import { useMediaQuery } from "react-responsive";
-import ono from "../images/ono.svg";
-import dashboard from "../images/dashboard.svg";
-import campaign from "../images/campaign.svg";
-import content from "../images/dashboard.svg";
-import audience from "../images/audience.svg";
-import flows from "../images/flows.svg";
-import settings from "../images/settings.svg";
-import Httper from "../lib/api";
-import Alert from "./Alert";
 
 const url = "https://onox.cloud/backend/simple_audience.php";
 var res = await Httper("get", url);
@@ -29,18 +27,33 @@ const Dashboard = () => {
   const [isOpen, setOpen] = useState(false);
   const [alert, setAlert] = useState(false);
   const [search, setSearch] = useState([]);
+  const [text, setText] = useState("");
 
   useClickAway(ref, () => setOpen(false));
 
-  const handleSearch = (event) => {
-    const value = event.target.value;
-    const filteredData = res.filter((x) =>
-      x.name.toLowerCase().includes(value.toLowerCase())
-    );
+  useEffect(() => {
+    if (text.length > 0) {
+      handleSearch(text);
+    } else {
+      setSearch(res);
+    }
+  }, [text]);
 
-    setSearch(filteredData);
-    if (!filteredData.length > 0) setAlert(true);
-    else setAlert(false);
+  const handleSearch = (text) => {
+    const filteredData =
+      search.length > 0
+        ? search.filter((x) =>
+            x.name.toLowerCase().includes(text.toLowerCase())
+          )
+        : res.filter((x) => x.name.toLowerCase().includes(text.toLowerCase()));
+
+    if (!filteredData.length > 0) {
+      setAlert(true);
+      setSearch(filteredData);
+    } else {
+      setSearch(filteredData);
+      setAlert(false);
+    }
   };
 
   const handleTag = (event) => {
@@ -51,9 +64,11 @@ const Dashboard = () => {
         ? search.filter((x) => x.tags[0] === value)
         : res.filter((x) => x.tags[0] === value);
 
-    setSearch(filteredData);
     if (!filteredData.length > 0) setAlert(true);
-    else setAlert(false);
+    else {
+      setSearch(filteredData);
+      setAlert(false);
+    }
   };
 
   const handleStatus = (event) => {
@@ -64,9 +79,11 @@ const Dashboard = () => {
         ? search.filter((x) => x.status === value)
         : res.filter((x) => x.status === value);
 
-    setSearch(filteredData);
     if (!filteredData.length > 0) setAlert(true);
-    else setAlert(false);
+    else {
+      setSearch(filteredData);
+      setAlert(false);
+    }
   };
 
   const isTabletOrMobile = useMediaQuery({
@@ -104,38 +121,39 @@ const Dashboard = () => {
                       >
                         <ul class="list-group hamburger">
                           <div class=" d-flex justify-content-end pe-2">
-                            <img src={ono} class="hm-img" />
+                            <img src={ono} alt="logo" class="hm-img" />
                           </div>
                           <li class="list-group-item" aria-current="true">
-                            <img src={dashboard} alt="dashboard" class="pe-2" />
+                            <DashboardIcon class="pe-2" />
                             <span>Dashboard</span>
                           </li>
                           <li class="list-group-item">
-                            <img src={campaign} alt="dashboard" class="pe-2" />
+                            <Campaign class="pe-2" />
                             <span> Campaign </span>
                           </li>
                           <li class="list-group-item selected">
-                            <img
-                              src={audience}
-                              alt="dashboard"
-                              class="pe-2"
-                              fill={"#fff"}
-                            />
+                            <Audience fill="#fff" class="pe-2" />
                             <span> Audience </span>
                           </li>
                           <li class="list-group-item">
-                            <img src={flows} alt="dashboard" class="pe-2" />
+                            <Flows class="pe-2" />
                             <span> Flows </span>
                           </li>
                           <li class="list-group-item">
-                            <img src={content} alt="dashboard" class="pe-2" />
+                            <Content class="pe-2" />
                             <span> Content </span>
                           </li>
                           <li class="list-group-item">
-                            <img src={settings} alt="dashboard" class="pe-2" />
+                            <Settings class="pe-2" />
                             <span> Settings </span>
                           </li>
                         </ul>
+                        <div class="d-flex justify-content-end pe-3 pt-3">
+                          <button className="button-hmb">
+                            <Logout class="pe-2" />
+                            Logout
+                          </button>
+                        </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -161,44 +179,48 @@ const Dashboard = () => {
                     </li>
                     <li class="nav-item">
                       <a class="navbar-brand" href="#">
-                        <img src={dashboard} alt="dashboard" />
-                        <span>Dashboard</span>
+                        <DashboardIcon alt="dashboard" />
+                        <span class="ms-3">Dashboard</span>
                       </a>
                     </li>
                     <li class="nav-item">
                       <a class="navbar-brand" href="#">
-                        <img src={campaign} alt="dashboard" />
-                        <span> Campaign </span>
+                        <Campaign class="pe-2" />
+                        <span class="ms-3"> Campaign </span>
                       </a>
                     </li>
                     <li class="nav-item">
                       <a class="navbar-brand" href="#">
-                        <img src={audience} alt="dashboard" />
-                        <span> Audience </span>
+                        <Audience pathColor={"#8241ff"} />
+                        <span class="active ms-3"> Audience </span>
                       </a>
                     </li>
                     <li class="nav-item">
                       <a class="navbar-brand" href="#">
-                        <img src={flows} alt="dashboard" />
-                        <span> Flows </span>
+                        <Flows />
+                        <span class="ms-3"> Flows </span>
                       </a>
                     </li>
                     <li class="nav-item">
                       <a class="navbar-brand" href="#">
-                        <img src={content} alt="dashboard" />
-                        <span> Content </span>
+                        <Content class="pe-2" />
+                        <span class="ms-3"> Content </span>
                       </a>
                     </li>
                     <li class="nav-item">
                       <a class="navbar-brand" href="#">
-                        <img src={settings} alt="dashboard" />
-                        <span> Settings </span>
+                        <Settings />
+                        <span class="ms-3"> Settings </span>
                       </a>
                     </li>
-                    <li class="mt-5 d-flex justify-content-center">
-                      <button className="button">Logout</button>
-                    </li>
+                    <li class="mt-5 d-flex justify-content-center"></li>
                   </ul>
+                  <div class="d-flex justify-content-lg-start fixed-bottom ps-5 pb-5">
+                    <button className="button">
+                      <Logout className="me-2" />
+                      Logout
+                    </button>
+                  </div>
                 </nav>
               )}
             </div>
@@ -228,10 +250,10 @@ const Dashboard = () => {
                 </div>
 
                 <div class="row mt-5">
-                  <div class="col-sm-9 col-md-12 col-lg-3 table-title d-flex justify-content-center">
+                  <div class="col-sm-12 col-md-12 col-lg-3 table-title d-flex justify-content-center align-items-lg-center">
                     <div>Audience List</div>
                   </div>
-                  <div class="col-sm-9 col-md-12 col-lg-9 d-flex justify-content-end">
+                  <div class="col-sm-12 col-md-12 col-lg-9 d-flex justify-content-end">
                     <div class="me-2">
                       <form class="d-flex" role="search">
                         <input
@@ -239,7 +261,9 @@ const Dashboard = () => {
                           type="search"
                           placeholder="Search"
                           aria-label="Search"
-                          onChange={handleSearch}
+                          onChange={(event) => {
+                            setText(event.target.value);
+                          }}
                         />
                       </form>
                     </div>
@@ -272,7 +296,7 @@ const Dashboard = () => {
                 <div class="row mt-5">
                   <div class="col-12">
                     {alert ? <Alert /> : ""}
-                    <Table data={search.length > 0 ? search : res} />
+                    <Table data={search} />
                   </div>
                 </div>
               </div>

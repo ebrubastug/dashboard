@@ -57,8 +57,11 @@
     color: $text-color;
   }
   li {
-    margin: 10px 15px;
+    margin: 13px 25px;
     :hover {
+      color: $purple;
+    }
+    svg:hover {
       color: $purple;
     }
   }
@@ -68,10 +71,7 @@
     display: block;
     padding: 6px 12px;
     text-decoration: none;
-    :active {
-      color: $purple;
-    }
-    :hover {
+    .active {
       color: $purple;
     }
 
@@ -79,9 +79,6 @@
       width: 24px;
       height: 24px;
       margin-right: 20px;
-      :hover {
-        fill: $purple;
-      }
       @media screen and (max-width: 960px) {
         width: 30px;
         height: 30px;
@@ -115,6 +112,22 @@
   .hm-img {
     width: 70px !important;
     height: 50px !important;
+  }
+}
+
+.button-hmb {
+  background-color: $purple;
+  width: 226px;
+  height: 52px;
+  top: 940px;
+  left: 32px;
+  border-radius: 8px;
+  border: none;
+  font-family: Dm Sans;
+  color: $white;
+  @media screen and (max-width: 576px) {
+    width: 60px;
+    height: 30px;
   }
 }
 
@@ -191,7 +204,9 @@
 
 .table-title {
   color: black;
-  margin-bottom: 20px;
+  @media screen and (max-width: 1200px) {
+    padding-bottom: 20px !important;
+  }
 }
 
 .form-check-input:checked {
@@ -200,6 +215,7 @@
 }
 
 .table {
+  z-index: $zindex-modal;
   border: 1px solid rgba(234, 234, 234, 1);
   border-radius: 12px;
   width: 1069px;

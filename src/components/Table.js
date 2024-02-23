@@ -1,7 +1,31 @@
-import React from "react";
+"use-client";
+import { React, useEffect, useState } from "react";
 import gallery from "../images/gallery.svg";
 
 function Table(props) {
+  const [checkAll, setCheckAll] = useState([]);
+
+  useEffect(() => {
+    setCheckAll(props?.data);
+  }, [props?.data]);
+
+  const checkHandler = (index) => {
+    var list = checkAll?.map((item, currentIndex) => {
+      return currentIndex === index
+        ? { ...item, checked: !item.checked }
+        : item;
+    });
+    setCheckAll(list);
+  };
+
+  const test = () => {
+    var list = checkAll?.map((item) => {
+      var data = { ...item, checked: !item.checked };
+      return data;
+    });
+    setCheckAll(list);
+  };
+
   return (
     <table class="table">
       <thead>
@@ -10,7 +34,9 @@ function Table(props) {
             <input
               class="form-check-input input-checked"
               type="checkbox"
-              value=""
+              onClick={() => {
+                test();
+              }}
               id="flexCheckDefault"
             />
           </th>
@@ -21,18 +47,19 @@ function Table(props) {
         </tr>
       </thead>
       <tbody>
-        {props.data?.map((row) => (
+        {checkAll?.map((row, index) => (
           <tr class="th" key={row?.id}>
             <th>
               <input
                 class="form-check-input"
                 type="checkbox"
-                value=""
-                id="flexCheckDefault"
+                checked={row.checked}
+                onChange={() => checkHandler(index)}
+                id={`checkbox${row.id}`}
               />
             </th>
             <td>
-              <img src={gallery} class="img-thumbnail me-2" />
+              <img src={gallery} alt="gallery" class="img-thumbnail me-2" />
               {row?.name}
             </td>
             <td class="td">{row?.tags[0]}</td>
